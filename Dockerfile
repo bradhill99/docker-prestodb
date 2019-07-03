@@ -13,15 +13,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN groupadd -g 999 presto && \
     useradd -r -u 999 -g presto --create-home --shell /bin/bash presto
-USER presto
+#USER presto
 
-RUN curl -L https://repo1.maven.org/maven2/io/prestosql/presto-server/${PRESTO_VERSION}/presto-server-${PRESTO_VERSION}.tar.gz -o /tmp/presto-server.tgz && \
-    tar -xzf /tmp/presto-server.tgz --strip 1 -C ${PRESTO_HOME} && \
-    mkdir -p ${PRESTO_HOME}/data && \
-    rm -f /tmp/presto-server.tgz
+COPY presto-server-315.tar.gz /tmp/presto-server.tgz
+RUN cd $HOME && \
+    mkdir 315 && \
+    tar -xzf /tmp/presto-server.tgz --strip 1 -C 315 && \
+    mkdir -p 315/data && \
+    rm -f /tmp/presto-server.tgz && \
+    mv 315/* $PRESTO_HOME
 
-RUN curl -L https://github.com/IBM/presto-db2/releases/download/${PRESTO_VERSION}/presto-db2-${PRESTO_VERSION}.zip -o /tmp/presto-db2.zip && \
-    unzip /tmp/presto-db2.zip -d ${PRESTO_HOME}/plugin/ && \
+COPY presto-db2.zip /tmp/presto-db2.zip 
+RUN unzip /tmp/presto-db2.zip -d ${PRESTO_HOME}/plugin/ && \
     mv ${PRESTO_HOME}/plugin/presto-db2-${PRESTO_VERSION} ${PRESTO_HOME}/plugin/db2 && \
     rm -f /tmp/presto-db2.zip
 
