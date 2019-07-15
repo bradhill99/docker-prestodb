@@ -35,6 +35,7 @@ VOLUME ["${PRESTO_HOME}/etc", "${PRESTO_HOME}/data"]
 
 WORKDIR ${PRESTO_HOME}
 
-ENTRYPOINT ["./bin/launcher"]
-
-CMD ["run"]
+#ENTRYPOINT ["./bin/launcher"]
+# purposely keep container alive
+ENTRYPOINT ["tail", "-f", "/dev/null"]
+#CMD ["run"]
