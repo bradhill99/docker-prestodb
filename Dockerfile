@@ -15,12 +15,12 @@ RUN groupadd -g 999 presto && \
     useradd -r -u 999 -g presto --create-home --shell /bin/bash presto
 #USER presto
 
-COPY presto-server-315.tar.gz /tmp/presto-server.tgz
+COPY presto-server-316.tar /tmp/presto-server.tar
 RUN cd $HOME && \
     mkdir 315 && \
-    tar -xzf /tmp/presto-server.tgz --strip 1 -C 315 && \
+    tar -xf /tmp/presto-server.tar --strip 1 -C 315 && \
     mkdir -p 315/data && \
-    rm -f /tmp/presto-server.tgz && \
+    rm -f /tmp/presto-server.tar && \
     mv 315/* $PRESTO_HOME
 
 COPY presto-db2.zip /tmp/presto-db2.zip 
